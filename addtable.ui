@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>AddTable</class>
+ <widget class="QDialog" name="AddTable">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>1364</width>
+    <height>764</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Add a table - QtMyAdmin</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">*{
+font-family: quicksand;
+font-size: 15px; 
+}
+
+QPushButton {
+border: 2px solid #6c78af; 
+border-radius: 15; 
+padding: 5px 30px;
+font-weight: 700;
+color: #6c78af;
+}
+QPushButton:hover {
+background:#292929;
+color: white;
+border: 2px solid #f89c0e; 
+}
+
+QPlainTextEdit {
+border: 2px solid #6c78af; 
+color: blue;
+}
+
+QLabel {
+font-size: 16px;
+}</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QTableWidget" name="tableWidgetAddTable">
+     <attribute name="verticalHeaderVisible">
+      <bool>false</bool>
+     </attribute>
+     <column>
+      <property name="text">
+       <string>Name</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Type</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Lenght/Values</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Default</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Attributes</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Null</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>Index</string>
+      </property>
+     </column>
+     <column>
+      <property name="text">
+       <string>A.I</string>
+      </property>
+     </column>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButtonCreateTable">
+       <property name="text">
+        <string>CREATE TABLE</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer_2">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <widget class="QLabel" name="labelError">
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
+       <property name="text">
+        <string>TextLabel</string>
+       </property>
+       <property name="textFormat">
+        <enum>Qt::PlainText</enum>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+       </property>
+       <property name="wordWrap">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
