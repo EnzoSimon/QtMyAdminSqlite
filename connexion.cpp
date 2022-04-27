@@ -2,6 +2,7 @@
 #include "ui_connexion.h"
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include <QFileDialog>
 #include <QSqlDatabase>
 #include <QDebug>
 
@@ -11,6 +12,10 @@ Connexion::Connexion(QWidget *parent) :
 {
     ui->setupUi(this);
     ui->labelConnectionError->setVisible(0);
+    ui->pushButtonBrowse->setVisible(0);
+
+    //Affichage des type de database
+    ui->comboBoxTypeDatabase->addItems(QSqlDatabase::database().drivers());
 }
 
 Connexion::~Connexion()
@@ -23,55 +28,103 @@ void Connexion::reconnexionLabelTitle()
     ui->labelTitle->setVisible(0);
 }
 
+
+
 void Connexion::on_pushButton_clicked()
 {
-    // connexion à la base de données
-    QSqlDatabase maBase = QSqlDatabase::addDatabase("QMYSQL");
-    maBase.setHostName(ui->lineEditHostname->text());
-    maBase.setDatabaseName(ui->lineEditDatabase->text());
-    maBase.setUserName(ui->lineEditUsername->text());
-    maBase.setPassword(ui->lineEditPassword->text());
 
 
-    if(ui->lineEditHostname->text().isEmpty()){
-        ui->lineEditHostname->setStyleSheet("background: #ed6b6b; color: white; border: 2px solid #a13838; ");
-        ui->lineEditHostname->setPlaceholderText("Enter text !");
-    }
-    if(ui->lineEditDatabase->text().isEmpty()){
-        ui->lineEditDatabase->setStyleSheet("background: #ed6b6b; color: white; border: 2px solid #a13838; ");
-        ui->lineEditDatabase->setPlaceholderText("Enter text !");
-    }
-    if(ui->lineEditPassword->text().isEmpty()){
-        ui->lineEditPassword->setStyleSheet("background: #ed6b6b; color: white; border: 2px solid #a13838; ");
-        ui->lineEditPassword->setPlaceholderText("Enter text !");
-    }
-    if(ui->lineEditUsername->text().isEmpty()){
-        ui->lineEditUsername->setStyleSheet("background: #ed6b6b; color: white; border: 2px solid #a13838; ");
-        ui->lineEditUsername->setPlaceholderText("Enter text !");
-    }
+        // connexion à la base de données
+        QSqlDatabase maBase = QSqlDatabase::addDatabase(ui->comboBoxTypeDatabase->currentText());
+        maBase.setDatabaseName(ui->lineEditDatabase->text());
+
+        if(ui->comboBoxTypeDatabase->currentText() !="QSQLITE"){
+        maBase.setUserName(ui->lineEditUsername->text());
+        maBase.setPassword(ui->lineEditPassword->text());
+        maBase.setHostName(ui->lineEditHostname->text());
+        }
 
 
-    // ouverture de la base
-    bool ok = maBase.open();
-    qDebug()<<ok;
+        if(ui->lineEditDatabase->text().isEmpty()){
+            ui->lineEditDatabase->setStyleSheet("background: #ed6b6b; color: white; border: 2px solid #a13838; ");
+            ui->lineEditDatabase->setPlaceholderText("Enter text !");
+        }
 
-    if(ok==true) {
-        qDebug()<<"accept";
-        dbName=ui->lineEditDatabase->text();
-        dbUser=ui->lineEditUsername->text();
-        dbMdp=ui->lineEditPassword->text();
 
-        // on renvoie à la MainWindow que l'utilisateur est connecté
-        accept();
+        // ouverture de la base
+        bool ok = maBase.open();
+        qDebug()<<ok;
 
-    } else {
+        if(ok==true) {
+            qDebug()<<"accept";
+            dbHost=ui->lineEditHostname->text();
+            dbUser=ui->lineEditUsername->text();
+            dbMdp=ui->lineEditPassword->text();
 
-        ui->labelConnectionError->setVisible(1);
+            qDebug()<<dbHost<<dbUser<<dbMdp;
 
-    }
+            // on renvoie à la MainWindow que l'utilisateur est connecté
+            accept();
+
+        } else {
+
+            ui->labelConnectionError->setVisible(1);
+
+        }
 }
 
 void Connexion::on_pushButtonCancel_clicked()
 {
     close();
+}
+
+void Connexion::on_comboBoxTypeDatabase_currentTextChanged(const QString &arg1)
+{
+    if(ui->comboBoxTypeDatabase->currentText()=="QSQLITE" ){
+        ui->lineEditHostname->setVisible(0);
+        ui->lineEditPassword->setVisible(0);
+        ui->lineEditUsername->setVisible(0);
+        ui->labelHostname->setVisible(0);
+        ui->labelPassword->setVisible(0);
+        ui->labelUsername->setVisible(0);
+
+        ui->pushButtonBrowse->setVisible(1);
+
+        ui->lineEditDatabase->setText("");
+
+    }else if(ui->comboBoxTypeDatabase->currentText()=="QMYSQL" || ui->comboBoxTypeDatabase->currentText()=="QMYSQL3"){
+        ui->lineEditHostname->setVisible(1);
+        ui->lineEditPassword->setVisible(1);
+        ui->lineEditUsername->setVisible(1);
+        ui->labelHostname->setVisible(1);
+        ui->labelPassword->setVisible(1);
+        ui->labelUsername->setVisible(1);
+        ui->pushButtonBrowse->setVisible(0);
+    }
+}
+
+
+void Connexion::on_pushButtonBrowse_clicked()
+{
+    QString fileName = QFileDialog::getOpenFileName(this,
+        tr("Select Your Database"), "home/", tr("Sqlite Files (*.sqlite)"));
+
+    ui->lineEditDatabase->setText(fileName);
+
+
+}
+
+QString Connexion::getMdp()
+{
+    return dbMdp;
+}
+
+QString Connexion::getHost()
+{
+    return dbHost;
+}
+
+QString Connexion::getUser()
+{
+    return dbUser;
 }

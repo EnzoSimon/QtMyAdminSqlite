@@ -13,15 +13,23 @@ class Connexion : public QDialog
 
 public:
     explicit Connexion(QWidget *parent = nullptr);
-    QString dbUser, dbMdp, dbName;
+    QString dbUser, dbMdp, dbHost;
     ~Connexion();
 
     void reconnexionLabelTitle();
+
+    QString getMdp();
+    QString getHost();
+    QString getUser();
 
 private slots:
     void on_pushButton_clicked();
 
     void on_pushButtonCancel_clicked();
+
+    void on_comboBoxTypeDatabase_currentTextChanged(const QString &arg1);
+
+    void on_pushButtonBrowse_clicked();
 
 private:
     Ui::Connexion *ui;
